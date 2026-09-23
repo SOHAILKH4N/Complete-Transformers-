@@ -1,0 +1,68 @@
+WHY TRANSFORMERS?
+Were Sequence Models like lstm , gru not enough?
+what are the limitations of these architectures that lead to invention transformers?
+
+
+what is sequence modelling?
+Ans: sequence modelling in DeepLearning refers to type of Neural Nets required 
+for sequential data 
+--> Sequence Data which contains context to previous input and meaning between the sentences
+requires correct modelling and ANNs are not good applications for solving this sequence
+problems , so Recurrent Neural Nets got discovered Recurrent Neural Networks (RNNs) trace their
+foundational concepts to the mid-1980s, with prominent artificial neural network implementations 
+emerging around 1986 through the work of David Rumelhart, alongside early related architectures
+like John Hopfield's networks in 1982
+
+--> Sequential Data include texts , speech data , time series data , Machine Translation etc
+--> RNNs do simple thing , in the each neuron operation , they add the operation for so called
+previous hidden state , this previous hidden state is nothing but the context stored in 
+terms of compressed vector , 
+--> the RNN mathematical formula is mentioned in the image.png
+
+--> In this proposed rnn , the architecture is simple , take the context of previous
+input and pass to the next input to make it know what was previously
+to predict the next token , to translate the languages , to predict future stock
+all are covered with a conditional problem , loss of context!
+
+
+--> RNNs are not able to remember hidden memory states when context keeps increasing ,this is due to vanishing gradients for farer words
+
+according to reasearchersnfor solving this problem , researchers introduced two beasts 
+
+** LSTMS - Long Short term memory
+
+** GRUS - Gated Recurrent Units
+
+these architecture introduced so called GATES
+basically , keeping a gate which is a Neural Net which decides which to take
+as input , which to forget and which to output to hidden and cell states
+
+--> a cell state type of nuance has been introduced in LSTM networks.
+and this was the take for solving the memory problem
+this cell state carrys information from past sentences and make the model remember the past information. 
+
+--> then comes GRU , this architecture made for simplifying LSTM nets
+basically this architecture completely removed the cell state and wants to make the lstm architecture phenomena in simple architecture but was in comparison similiar to lstm performance only!
+
+the big and import problem have'nt been solved yet , which is parallel computation of weights and biases through the network , for scalability
+means that these 3 architectures were not able to calculate the weights and biases parallely as the data moves sequentially and this was the primary bottleneck!
+
+--> Researchers didn't gave up and in 2014 Ilya sutskever introduced sequence to sequence modelling , which is encoder decoder architecture , in this arch 
+he introduce how encoder and decoder can be trained on machine translation and gave 34 BLEU score for WMT 2014 competition 
+
+--> this arch states how teacher forcing of machine translation be done to make model learn languages , this arch shows how last output of encoder passed to the input of decoder and how decoder has processed the prediction of that particular word translation and same input gave to next component of decoder and the model learns the translation , which is nothing but weights and biases , 
+here again the problem arrives for long context and parallel computing problem 
+for solving this 
+2015 paper by Dmiztry Bahdanau about attention came , which introduces the core attention , it states how we can add C vector which is attention matrix in the calculation to give the attention to required word in encoder 
+
+bahdanau states that for the creation of this C vector , we will look in the encoder hidden states and concatenate with decoder current prediction and assign each of them learnable weights so that the summation of these calculation leads to creation of C vector 
+
+Although I as a learner have to complete this knowledge gaps about attention 
+
+2015 again other reasearcher Luong , came with efficient alternative of the same bahdanau attention , which is instead of keeping a nn for creation of C ,
+we will cross multiply the encoder hidden states with the prediction of decoder and produce the C vector , as I repeat , currently i do not have complete intution about this attention stuff and needs to spend time !
+
+this led to the creation of transformers , one architecture with encoder nd decoder but having types of attention in it with feed forward neural network!
+
+
+
