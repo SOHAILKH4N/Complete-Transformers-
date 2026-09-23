@@ -60,7 +60,7 @@ bahdanau states that for the creation of this C vector , we will look in the enc
 Although I as a learner have to complete this knowledge gaps about attention 
 
 2015 again other reasearcher Luong , came with efficient alternative of the same bahdanau attention , which is instead of keeping a nn for creation of C ,
-we will cross multiply the encoder hidden states with the prediction of decoder and produce the C vector , as I repeat , currently i do not have complete intution about this attention stuff and needs to spend time !
+we will cross multiply the encoder hidden states with the prediction of decoder and produce the C vector , as I repeat , currently (13th september) i do not have complete intution about this attention stuff and needs to spend time !
 
 this led to the creation of transformers , one architecture with encoder nd decoder but having types of attention in it with feed forward neural network!
 
