@@ -1,0 +1,186 @@
+Here , we are discussing and explaining in brief about the actual dataset and model configurations used in GPT-2
+
+1. The actual GPT-2 Dataset: WebText
+
+GPT-2 was trained on a dataset called WebText,
+created specifically for the project. The motivation was to get a large, diverse collection of reasonably high-quality
+Internet text rather than simply using Common Crawl.
+
+How WebText was collected
+
+The process was roughly:
+
+Reddit → links → web pages → extracted text → cleaning/deduplication → WebText
+
+OpenAI used Reddit outbound links that had received at least 3 karma as a quality filter. 
+The reasoning was that Reddit users had effectively provided a weak form of human curation:
+if people upvoted a link, it was more likely to be interesting, useful, educational, etc.
+
+
+2. GPT-2 Architecture
+
+GPT-2 is a Transformer Decoder-style Architecture
+
+It was actually a scaled up version of original GPT architecture
+
+important components include:
+
+Input text
+     ↓
+Byte-level BPE tokenization
+     ↓
+Token embeddings
+     +
+Positional information
+     ↓
+Transformer blocks
+     ↓
+Self-attention + feed-forward networks
+     ↓
+Vocabulary probabilities
+     ↓
+Next-token prediction
+
+
+The model uses masked self-attention, meaning when predicting token \(t\), it cannot look at future tokens.
+
+For example:
+
+The cat sat on the mat
+  ↓
+  ↓
+  ↓
+  ↓
+  ↓
+
+When predicting "mat", it can see:
+
+" The cat sat on the "
+
+but not "mat" itself or anything after it.
+
+    
+
+Gpt 2 Small had 117M total 
+
+12 Transformer Layers
+
+each token has 768 embedding dimensions
+
+======================================
+
+| Model        | Parameters | Layers | Hidden size | Attention heads |
+| ------------ | ---------: | -----: | ----------: | --------------: |
+| GPT-2 Small  |   **117M** |     12 |         768 |              12 |
+| GPT-2 Medium |   **345M** |     24 |        1024 |              16 |
+| GPT-2 Large  |   **762M** |     36 |        1280 |              20 |
+| GPT-2 XL     |   **1.5B** |     48 |        1600 |              25 |
+
+
+These are often referred to as approximately:
+
+124M / 355M / 774M / 1.5B in later releases/documentation, while the original paper reports
+approximately 117M / 345M / 762M / 1.5B depending on parameter-count conventions. OpenAI's staged release
+described the publicly released models as 117M, 345M, 762M and eventually 1.5B.
+
+
+What changes as the model gets bigger?
+
+Basically three major dimensions increase:
+
+1. Number of Transformer layers
+
+12 → 24 → 36 → 48
+
+2. Hidden/embedding dimensionality
+
+768 → 1024 → 1280 → 1600
+
+3. Number of attention heads
+
+12 → 16 → 20 → 25
+
+So GPT-2 isn't four completely different architectures.
+
+It is essentially:
+
+the same Transformer design scaled upward.
+
+Talking about Context Length
+
+GPT-2 used 1024 tokens
+
+[token 1]
+[token 2]
+[token 3]
+...
+[token 1024]
+        ↓
+Transformer
+        ↓
+next-token probabilities
+
+The model can use the preceding context to predict what comes next.
+
+This is much shorter than the context windows of modern LLMs they are having in millions now a days
+but it was substantial for 2019.
+
+6. Tokenization
+
+GPT-2 did something particularly important with tokenization.
+
+It used byte-level Byte Pair Encoding (BPE).
+
+Instead of requiring every word to be represented as one token,
+text is broken into subword/byte-level units.
+
+
+7. Training configuration
+
+The central training setup was:
+
+Objective
+
+Causal language modeling / next-token prediction
+
+Input:
+The stock market crashed because
+
+Target:
+investors
+
+The model learns to maximize the probability of the correct next token.
+
+Training data
+WebText
+≈ 8 million documents
+≈ 40 GB text
+
+
+Training style
+
+Unsupervised/self-supervised learning
+
+There were no human-written labels such as:
+
+Question → Answer
+Sentiment → Positive
+Article → Summary
+
+The text itself provides the training signal.
+
+For example:
+
+The company reported record profits
+
+can automatically produce training examples:
+
+The → company
+The company → reported
+The company reported → record
+The company reported record → profits
+
+This is why it is more accurately called self-supervised today:
+the training targets come from the text itself.
+
+
